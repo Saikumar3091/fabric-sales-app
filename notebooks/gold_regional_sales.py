@@ -17,21 +17,22 @@ spark = SparkSession.builder.getOrCreate()
 # ---------------------------------------------------------------------------
 # 1. Load source CSVs
 # ---------------------------------------------------------------------------
-# Files section of the attached Lakehouse. Swap for an ABFS path if the
-# Lakehouse isn't attached to this notebook, e.g.:
-# "abfss://<workspace>@onelake.dfs.fabric.microsoft.com/<lakehouse>.Lakehouse/Files/raw"
-RAW_PATH = "Files/raw"
-
-transactions_df = (
-    spark.read.option("header", "true")
-    .option("inferSchema", "true")
-    .csv(f"{RAW_PATH}/sales_transactions.csv")
-)
+# Relative paths resolve against the Files section of the Lakehouse attached
+# to this notebook. Swap for an ABFS path if the Lakehouse isn't attached,
+# e.g. "abfss://<workspace>@onelake.dfs.fabric.microsoft.com/<lakehouse>.Lakehouse/Files/raw/customers.csv"
+CUSTOMERS_PATH = "Files/raw/customers.csv"
+TRANSACTIONS_PATH = "Files/raw/sales_transactions.csv"
 
 customers_df = (
     spark.read.option("header", "true")
     .option("inferSchema", "true")
-    .csv(f"{RAW_PATH}/customers.csv")
+    .csv(CUSTOMERS_PATH)
+)
+
+transactions_df = (
+    spark.read.option("header", "true")
+    .option("inferSchema", "true")
+    .csv(TRANSACTIONS_PATH)
 )
 
 # ---------------------------------------------------------------------------
